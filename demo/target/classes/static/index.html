@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title> Index </title>
+<style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+	body {
+		background-color: #bdbdbd;
+	}
+	.button1 {
+		background-color: #4B515D;
+	}
+	.sidenav {
+      padding-top: 60px;
+	  padding-left: 10px;
+      background-color: #f1f1f1;
+      height: 100%;
+	  width: 78px;
+    }
+	.row.content {height: 1255px}
+	<!-->
+	.nav-tabs {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+	-->
+
+</style>
+<script>
+$(function() {
+	  $("#dugme1").click(function() {
+	    $(this).closest("form").attr('action', '/root');
+	    $("#number").attr('disabled', 'disabled');
+		$("#pwd").attr('disabled', 'disabled');
+		$("#endUser").attr('name', 'hold');
+	  });
+	  $("#dugme2").click(function() {
+		$(this).closest("form").attr('action', '/CA');
+		$("#number").removeAttr('disabled');
+	    $("#pwd").removeAttr('disabled');
+	    $("#endUser").attr('name', 'hold');
+		  });
+	  $("#dugme3").click(function() {	  
+		$(this).closest("form").attr('action', '/CA');
+		$("#number").removeAttr('disabled');
+		$("#pwd").removeAttr('disabled');
+		$("#endUser").attr('name', 'endUser');
+		  });
+	  var frm = $('#certForm');
+	  frm.submit(function (e) {
+
+	        e.preventDefault();
+			var type = $('input[name=optradio]:checked', '#certForm').val();
+	        $.ajax({
+	            type: frm.attr('method'),
+	            url: frm.attr('action'),
+	            data: frm.serialize(),
+	            success: function (data) {
+	            	if(type==1) { $(".lead").hide(); $("#rootSuccess").show();}
+	            	if(type==2) { $(".lead").hide(); $("#caSuccess").show();}
+	            	if(type==3) { $(".lead").hide(); $("#endSuccess").show();}
+	            	
+	            	console.log('Success');
+	            	console.log(type);
+	            },
+	            error: function (data) {
+	                console.log('An error occurred.');
+	                $(".lead").hide();
+	                $("#fail").show();
+	            },
+	        });
+	        return false;
+	    });
+	  var frm1 = $('#getForm');
+	  frm1.submit(function(e){
+		  e.preventDefault();
+		  $.ajax({
+	            type: frm1.attr('method'),
+	            url: frm1.attr('action'),
+	            data: frm1.serialize(),
+	            success: function(data, status){
+	            	
+	            }
+	  });
+	  });
+		  var frm2 = $('#revokeForm');
+		  frm2.submit(function(e){
+			  e.preventDefault();
+			  $.ajax({
+		            type: frm2.attr('method'),
+		            url: frm2.attr('action'),
+		            data: frm2.serialize(),
+		            success: function(data, status){
+		            	$("#revokePar").text("Sertifikat uspesno povucen");
+		            	$("#revokePar").show();
+		            },
+			  		error: function(data){
+			  			$("#revokePar").text("Sertifikat nije uspesno povucen");
+		            	$("#revokePar").show();
+			  		
+			  			}
+			  		
+		  });
+			  return false;
+		  });
+		  var frm3 = $('#checkForm');
+		  frm3.submit(function(e){
+			  e.preventDefault();
+			  $.ajax({
+		            type: frm3.attr('method'),
+		            url: frm3.attr('action'),
+		            data: frm3.serialize(),
+		            success: function(data, status){
+		            	$("#revokeCheck").text("Sertifikat je povucen");
+		            	$("#revokeCheck").show();
+		            },
+		            error: function(data){
+		            	$("#revokeCheck").text("Sertifikat nije povucen");
+		            	$("#revokeCheck").show();
+		            }
+			  		
+		  });
+		  });
+	  
+	});
+
+
+</script>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse  navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+	 <!-- <a href="#" class="navbar-left"><img src="images/keys1.png"></a>-->
+    <!--  <a class="navbar-brand" href="#">Logo</a>-->
+	<a class="navbar-brand" rel="home" href="#" title="Keystore">
+        <img style="max-width:50px; margin-top: -15px;"
+             src="images/keys1.png">
+    </a>
+	
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a class="dropdown-toggle" data-toggle="tab" href="#home">Create New Certificate</a>
+		</li>
+        <li><a data-toggle="tab" href="#tab1">Find Certificate</a></li>
+        <li><a data-toggle="tab" href="#tab2">Revoke Certificate</a></li>
+        <li><a data-toggle="tab" href="#tab3">Check Certificate Status</a></li>
+      </ul>
+	  
+     <!-- <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>-->
+    </div>
+  </div>
+  </nav>
+  <!-- *************************************-->
+  
+  <div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-1 sidenav">
+ 
+ </div>
+ 
+ <div class="col-sm-8 text-left"> 
+      <div class="tab-content" style="width:420px; padding-top:40px">
+	  <div id="home" class="tab-pane fade in active">
+	  
+<form class="form-vertical" action="#" method="POST" id="certForm">
+		<h1> New Certificate </h1>
+		
+		
+		<div class="form-group">
+		<label for="number">Serial number: </label>
+		<input type="number" class="form-control" id="number1" placeholder="Enter serial number" name="serialNumber" required>
+		</div>
+		<div class="form-group">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" id="pwd1" placeholder="Enter password" name="pwd" required>
+        </div>
+	
+		<hr>
+		<div class="radio">
+		<label><input type="radio" name="optradio" id="dugme1" value="1">Self Signed </label>
+		<label><input type="radio" name="optradio" id="dugme2" value="2">Certificate Authority</label>
+		<label><input type="radio" name="optradio" id="dugme3" value="3">End User</label>
+		
+		</div>
+		<hr>
+		
+		<div class="form-group">
+		<label for="number">Issuer Serial number: </label>
+		<input type="number" class="form-control" id="number" placeholder="Enter serial number" disabled="false" name="issuerSerialNumber" required>
+		</div>
+		<div class="form-group">
+        <label for="pwd">Issuer Password:</label>
+        <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd1" disabled="false" required>
+        </div>
+		<hr>
+		
+		<div class="form-group">
+		<label for="cn">Common Name(CN):</label>
+		<input type="text" class="form-control" name="cn" placeholder="Enter Common Name" required>
+		</div>
+		<div class="form-group">
+		<label for="ou">Organisation Unit(OU):</label>
+		<input type="text" class="form-control" name="ou" placeholder="Enter Organisation Unit" required>
+		</div>
+		<div class="form-group">
+		<label for="on">Organisation name(O):</label>
+		<input type="text" class="form-control" name="on" placeholder="Enter Organisation Name" required>
+		</div>
+		<div class="form-group">
+		<label for="ln">Locality Name(L):</label>
+		<input type="text" class="form-control" name="ln" placeholder="Enter Locality Name" required>
+		</div>
+		<div class="form-group">
+		<label for="sn">State Name(ST):</label>
+		<input type="text" class="form-control" name="sn" placeholder="Enter State Name" required>
+		</div>
+		<div class="form-group">
+		<label for="c">Country(C):</label>
+		<input type="text" class="form-control" name="c" placeholder="Enter Country" required>
+		</div>
+		<div class="form-group">
+		<label for="date1">Valid from:</label>
+		<input type="date" class="form-control" id="date" name="date1" required>
+		</div>
+		<div class="form-group">
+		<label for="date2">Valid until:</label>
+		<input type="date" class="form-control" id="date" name="date2" required>
+		</div>
+		 <div class="form-group">
+		<label for="e">Email address:</label>
+		<input type="email" class="form-control" id="email" name="e" placeholder="jane.doe@example.com" required>
+		<p id="rootSuccess" style="display:none" class="lead">Root sertificate added</p>
+		<p id="caSuccess" style="display:none" class="lead">CA sertificate added</p>
+		<p id="endSuccess" style="display:none" class="lead">User sertificate added</p>
+		<p id="fail" style="display:none" class="lead">Dodavanje nije uspelo</p>		
+		<input type="hidden"  name="hold" id="endUser">
+		</div>
+		
+	<hr>
+	<button type="submit" class="btn btn-default" name="submit">Submit</button>
+	</form>
+      </div>
+
+ <div id="tab1" class="tab-pane fade">
+      <h1>Find Certificate</h1>
+	  
+	  <form class="form-vertical" action="/getCert" method="GET" id="getCert"> 
+	  <div class="form-group">
+		<label for="number3">Serial number: </label>
+		<input type="number" class="form-control" id="number3" placeholder="Enter serial number" name="serialNumber" required>
+		</div>
+		<hr>
+		<button type="submit" class="btn btn-default" name="submit1">Submit</button>
+		
+		</form>
+		
+    </div>
+	
+ <div id="tab2" class="tab-pane fade">
+      <h1>Revoke Certificate</h1>
+	  
+	   <form class="form-vertical" action="/revokeCert" method="POST" id="revokeForm">
+	  <div class="form-group">
+		<label for="number4">Issuer serial number: </label>
+		<input type="number" class="form-control" id="number4" placeholder="Enter issuer serial number" name="issuerAlias" required>
+		<label for="number5">Issuer password: </label>
+		<input type="password" class="form-control" id="number5" placeholder="Enter issuer password" name="issuerPassword" required>
+		<label for="number6">Serial number: </label>
+		<input type="number" class="form-control" id="number6" placeholder="Enter serial number" name="serialNumber" required>
+		</div>
+		<hr>
+		<button type="submit" class="btn btn-default" name="submit2">Submit</button>  
+	  	<p id="revokePar" style="display:none" class="lead"></p>
+	  </form>
+	  
+	</div>
+	
+ <div id="tab3" class="tab-pane fade">
+      <h1>Check Certificate Status</h1>
+	  
+	    <form class="form-vertical" action="/checkCert" method="GET" id="checkForm">
+	  <div class="form-group">
+		<label for="number5">Serial number: </label>
+		<input type="number" class="form-control" id="number5" placeholder="Enter serial number" name="serialNumber" required>	
+		</div>
+		<hr>
+		<button type="submit" class="btn btn-default" name="submit3">Submit</button>
+		<p id="revokeCheck" style="display:none" class="lead"></p>  
+	  </form>
+	  
+    </div>
+	
+	
+</div>
+</div>
+
+</div>
+</div>
+
+</body>
+
+</html>
